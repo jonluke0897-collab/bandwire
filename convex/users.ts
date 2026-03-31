@@ -53,6 +53,16 @@ export const create = mutation({
   },
 });
 
+export const getByUsername = query({
+  args: { username: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("users")
+      .withIndex("by_username", (q) => q.eq("username", args.username))
+      .unique();
+  },
+});
+
 export const update = mutation({
   args: {
     name: v.optional(v.string()),

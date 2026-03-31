@@ -127,3 +127,32 @@ export const update = mutation({
     return null;
   },
 });
+
+export const browse = query({
+  args: {
+    genres: v.optional(v.array(v.string())),
+    city: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    let venues = await ctx.db
+      .query("venues")
+      .filter((q) => q.eq(q.field("isActive"), true))
+      .collect();
+
+    if (args.genres && args.genres.length > 0) {
+      const genreSet = new Set(args.genres);
+      venues = venues.filter((v) => v.genres.some((g) => genreSet.has(g)));
+    }
+
+    if (args.city) {
+      const cityLower = args.city.toLowerCase();
+      venues = venues.filter((v) =>
+        v.location.city.toLowerCase().includes(cityLower)
+      );
+    }
+
+    venues.sort((a, b) => b.createdAt - a.createdAt);
+
+    return venues.slice(0, 50);
+  },
+});

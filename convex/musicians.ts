@@ -213,3 +213,34 @@ export const update = mutation({
     return null;
   },
 });
+
+export const browse = query({
+  args: {
+    genres: v.optional(v.array(v.string())),
+    city: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    let musicians = await ctx.db
+      .query("musicians")
+      .filter((q) => q.eq(q.field("isActive"), true))
+      .collect();
+
+    if (args.genres && args.genres.length > 0) {
+      const genreSet = new Set(args.genres);
+      musicians = musicians.filter((m) =>
+        m.genres.some((g) => genreSet.has(g))
+      );
+    }
+
+    if (args.city) {
+      const cityLower = args.city.toLowerCase();
+      musicians = musicians.filter((m) =>
+        m.location.city.toLowerCase().includes(cityLower)
+      );
+    }
+
+    musicians.sort((a, b) => b.profileCompleteness - a.profileCompleteness);
+
+    return musicians.slice(0, 50);
+  },
+});
