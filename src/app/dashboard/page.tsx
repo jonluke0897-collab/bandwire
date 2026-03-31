@@ -3,7 +3,9 @@
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, Send, BookOpen } from "lucide-react";
 import Link from "next/link";
 
@@ -20,6 +22,27 @@ export default function DashboardPage() {
 }
 
 function VenueDashboard() {
+  const openDates = useQuery(api.openDates.listByVenue);
+  const offers = useQuery(api.offers.listSent);
+
+  const loading = openDates === undefined || offers === undefined;
+
+  const openCount = openDates?.filter((od) => od.status === "open").length ?? 0;
+  const pendingCount =
+    offers?.filter((o) => o.status === "pending").length ?? 0;
+
+  const upcomingDates = openDates
+    ?.filter(
+      (od) => od.status !== "cancelled" && od.date >= new Date().toISOString().split("T")[0]
+    )
+    .slice(0, 5);
+
+  const statusBadge: Record<string, "info" | "warning" | "success"> = {
+    open: "info",
+    hold: "warning",
+    booked: "success",
+  };
+
   return (
     <div className="max-w-content mx-auto">
       <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
@@ -30,7 +53,11 @@ function VenueDashboard() {
             <Calendar size={24} className="text-primary" />
           </div>
           <div>
-            <p className="text-2xl font-semibold">0</p>
+            {loading ? (
+              <Skeleton className="h-7 w-8" />
+            ) : (
+              <p className="text-2xl font-semibold">{openCount}</p>
+            )}
             <p className="text-sm text-text-muted">Open Dates</p>
           </div>
         </Card>
@@ -39,7 +66,11 @@ function VenueDashboard() {
             <Send size={24} className="text-warning" />
           </div>
           <div>
-            <p className="text-2xl font-semibold">0</p>
+            {loading ? (
+              <Skeleton className="h-7 w-8" />
+            ) : (
+              <p className="text-2xl font-semibold">{pendingCount}</p>
+            )}
             <p className="text-sm text-text-muted">Pending Offers</p>
           </div>
         </Card>
@@ -54,17 +85,61 @@ function VenueDashboard() {
         </Card>
       </div>
 
-      <Card className="text-center py-12">
-        <h2 className="text-lg font-medium text-text-primary mb-2">
-          Welcome to Bandwire!
-        </h2>
-        <p className="text-text-muted mb-6">
-          Start by posting an open date on your calendar.
-        </p>
-        <Link href="/dashboard/calendar">
-          <Button>Go to Calendar</Button>
-        </Link>
-      </Card>
+      {!loading && upcomingDates && upcomingDates.length > 0 ? (
+        <div>
+          <h2 className="text-lg font-medium mb-4">Upcoming Open Dates</h2>
+          <div className="space-y-2">
+            {upcomingDates.map((od) => {
+              const displayDate = new Date(
+                od.date + "T12:00:00"
+              ).toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              });
+
+              return (
+                <Card
+                  key={od._id}
+                  hoverable
+                  className="flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-medium text-text-primary">
+                      {displayDate}
+                    </p>
+                    <p className="text-xs text-text-muted">
+                      {od.genres.slice(0, 3).join(", ")}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Badge variant={statusBadge[od.status] ?? "default"}>
+                      {od.status}
+                    </Badge>
+                    <Link href={`/dashboard/matches?date=${od.date}`}>
+                      <Button variant="ghost" size="sm">
+                        View Matches
+                      </Button>
+                    </Link>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      ) : !loading ? (
+        <Card className="text-center py-12">
+          <h2 className="text-lg font-medium text-text-primary mb-2">
+            Welcome to Bandwire!
+          </h2>
+          <p className="text-text-muted mb-6">
+            Start by posting an open date on your calendar.
+          </p>
+          <Link href="/dashboard/calendar">
+            <Button>Go to Calendar</Button>
+          </Link>
+        </Card>
+      ) : null}
     </div>
   );
 }
