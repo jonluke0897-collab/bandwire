@@ -8,6 +8,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BookingCard } from "@/components/features/booking-card";
 import { BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Doc } from "../../../../convex/_generated/dataModel";
+
+type BookingWithNames = Doc<"bookings"> & {
+  venueName: string;
+  musicianBandName: string;
+};
 
 const TABS = ["Upcoming", "Past", "Cancelled"] as const;
 
@@ -31,7 +37,7 @@ export default function BookingsPage() {
 
   const today = new Date().toISOString().split("T")[0];
 
-  const filtered = bookings.filter((b) => {
+  const filtered = bookings.filter((b: BookingWithNames) => {
     if (activeTab === "Upcoming")
       return b.status === "confirmed" && b.date >= today;
     if (activeTab === "Past")
@@ -72,7 +78,7 @@ export default function BookingsPage() {
         </Card>
       ) : (
         <div className="space-y-3">
-          {filtered.map((booking) => (
+          {filtered.map((booking: BookingWithNames) => (
             <BookingCard
               key={booking._id}
               booking={booking}

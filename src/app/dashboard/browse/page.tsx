@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { GENRES } from "@/lib/constants";
 import { MapPin, Search, Users } from "lucide-react";
 import Link from "next/link";
+import { Doc } from "../../../../convex/_generated/dataModel";
 
 export default function BrowsePage() {
   const user = useQuery(api.users.me);
@@ -90,7 +91,7 @@ function BrowseMusicians({
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {musicians.map((m) => (
+          {musicians.map((m: Doc<"musicians">) => (
             <Card key={m._id} hoverable className="flex flex-col gap-3">
               <div>
                 <h3 className="text-lg font-semibold text-text-primary">{m.bandName}</h3>
@@ -99,7 +100,7 @@ function BrowseMusicians({
                 </p>
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {m.genres.slice(0, 4).map((g) => <Badge key={g}>{g}</Badge>)}
+                {m.genres.slice(0, 4).map((g: string) => <Badge key={g}>{g}</Badge>)}
                 {m.genres.length > 4 && <Badge variant="secondary">+{m.genres.length - 4}</Badge>}
               </div>
               <div>
@@ -153,7 +154,7 @@ function BrowseVenues({
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {venues.map((v) => (
+          {venues.map((v: Doc<"venues">) => (
             <Card key={v._id} hoverable className="flex flex-col gap-3">
               <div>
                 <h3 className="text-lg font-semibold text-text-primary">{v.name}</h3>
@@ -162,7 +163,7 @@ function BrowseVenues({
                 </p>
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {v.genres.slice(0, 4).map((g) => <Badge key={g}>{g}</Badge>)}
+                {v.genres.slice(0, 4).map((g: string) => <Badge key={g}>{g}</Badge>)}
                 {v.genres.length > 4 && <Badge variant="secondary">+{v.genres.length - 4}</Badge>}
               </div>
               <div className="flex items-center justify-between text-sm">

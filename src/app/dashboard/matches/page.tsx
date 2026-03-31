@@ -11,6 +11,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MatchCard } from "@/components/features/match-card";
 import { Calendar, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Doc } from "../../../../convex/_generated/dataModel";
+
+type MatchResult = {
+  musician: Doc<"musicians">;
+  score: number;
+  matchReasons: string[];
+};
 
 const STATUS_BADGE: Record<string, "default" | "success" | "warning" | "info"> = {
   open: "info",
@@ -28,7 +35,7 @@ export default function MatchesPage() {
   // Pre-select open date from URL param
   useEffect(() => {
     if (dateParam && openDates && !selectedId) {
-      const match = openDates.find((od) => od.date === dateParam);
+      const match = openDates.find((od: Doc<"openDates">) => od.date === dateParam);
       if (match) setSelectedId(match._id);
     }
   }, [dateParam, openDates, selectedId]);
@@ -38,7 +45,7 @@ export default function MatchesPage() {
     selectedId ? { openDateId: selectedId } : "skip"
   );
 
-  const selectedOpenDate = openDates?.find((od) => od._id === selectedId);
+  const selectedOpenDate = openDates?.find((od: Doc<"openDates">) => od._id === selectedId);
 
   if (openDates === undefined) {
     return (
@@ -53,7 +60,7 @@ export default function MatchesPage() {
   }
 
   const activeOpenDates = openDates.filter(
-    (od) => od.status !== "cancelled"
+    (od: Doc<"openDates">) => od.status !== "cancelled"
   );
 
   return (
@@ -72,7 +79,7 @@ export default function MatchesPage() {
               <p className="text-sm text-text-muted">No open dates yet</p>
             </Card>
           ) : (
-            activeOpenDates.map((od) => {
+            activeOpenDates.map((od: Doc<"openDates">) => {
               const displayDate = new Date(
                 od.date + "T12:00:00"
               ).toLocaleDateString("en-US", {
@@ -141,7 +148,7 @@ export default function MatchesPage() {
               <p className="text-sm text-text-muted">
                 {matches.length} match{matches.length !== 1 ? "es" : ""} found
               </p>
-              {matches.map((match) => (
+              {matches.map((match: MatchResult) => (
                 <MatchCard
                   key={match.musician._id}
                   musician={match.musician}

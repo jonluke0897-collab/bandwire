@@ -24,6 +24,7 @@ export default function DashboardPage() {
 function VenueDashboard() {
   const openDates = useQuery(api.openDates.listByVenue);
   const offers = useQuery(api.offers.listSent);
+  const subStatus = useQuery(api.subscriptions.getStatus);
 
   const loading = openDates === undefined || offers === undefined;
 
@@ -84,6 +85,17 @@ function VenueDashboard() {
           </div>
         </Card>
       </div>
+
+      {subStatus && subStatus.tier === "free" && subStatus.offersThisMonth > 3 && (
+        <Card className="mb-6 border-warning/30 bg-warning/5 flex items-center justify-between">
+          <p className="text-sm text-warning font-medium">
+            You&apos;ve used {subStatus.offersThisMonth} of 5 free offers this month.
+          </p>
+          <Link href="/dashboard/settings">
+            <Button size="sm">Upgrade to Pro</Button>
+          </Link>
+        </Card>
+      )}
 
       {!loading && upcomingDates && upcomingDates.length > 0 ? (
         <div>

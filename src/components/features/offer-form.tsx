@@ -55,11 +55,10 @@ export function OfferForm({
   const [submitting, setSubmitting] = useState(false);
   const sendOffer = useMutation(api.offers.send);
 
-  const user = useQuery(api.users.me);
-  const offerCount = useQuery(api.offers.countSentThisMonth);
+  const status = useQuery(api.subscriptions.getStatus);
 
-  const isFree = user?.subscriptionTier === "free";
-  const limitReached = isFree && offerCount !== undefined && offerCount >= 5;
+  const isFree = status?.tier === "free";
+  const limitReached = status !== undefined && !status.canSendOffer;
 
   const {
     register,
@@ -113,7 +112,7 @@ export function OfferForm({
             Free Tier Limit Reached
           </h3>
           <p className="text-text-muted mb-4 text-sm">
-            You&apos;ve sent {offerCount} of 5 offers this month.
+            You&apos;ve sent {status?.offersThisMonth ?? 0} of 5 offers this month.
             Upgrade to Pro for unlimited offers.
           </p>
           <Link href="/dashboard/settings">
@@ -129,9 +128,9 @@ export function OfferForm({
       <p className="text-sm text-text-muted mb-4">
         Sending offer to <span className="text-text-primary font-medium">{musicianName}</span>
       </p>
-      {isFree && offerCount !== undefined && (
+      {isFree && status !== undefined && (
         <p className="text-xs text-text-muted mb-4">
-          {offerCount}/5 free offers used this month
+          {status.offersThisMonth}/5 free offers used this month
         </p>
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

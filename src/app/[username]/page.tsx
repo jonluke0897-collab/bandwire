@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MapPin, Users, Music, ExternalLink, Globe } from "lucide-react";
 import Link from "next/link";
+import { Id } from "../../../convex/_generated/dataModel";
 
 export default function PublicProfilePage() {
   const params = useParams();
@@ -44,7 +45,7 @@ export default function PublicProfilePage() {
   return null;
 }
 
-function MusicianPublicProfile({ userId, userName }: { userId: any; userName: string }) {
+function MusicianPublicProfile({ userId, userName }: { userId: Id<"users">; userName: string }) {
   const musician = useQuery(api.musicians.getByUserId, { userId });
 
   if (musician === undefined) {
@@ -60,10 +61,10 @@ function MusicianPublicProfile({ userId, userName }: { userId: any; userName: st
   if (!musician) return null;
 
   const musicLinks = musician.musicLinks
-    ? Object.entries(musician.musicLinks).filter(([, url]) => url && url.length > 0)
+    ? Object.entries(musician.musicLinks as Record<string, string | undefined>).filter(([, url]: [string, string | undefined]) => url && url.length > 0) as [string, string][]
     : [];
   const socialLinks = musician.socialLinks
-    ? Object.entries(musician.socialLinks).filter(([, url]) => url && url.length > 0)
+    ? Object.entries(musician.socialLinks as Record<string, string | undefined>).filter(([, url]: [string, string | undefined]) => url && url.length > 0) as [string, string][]
     : [];
 
   return (
@@ -171,7 +172,7 @@ function MusicianPublicProfile({ userId, userName }: { userId: any; userName: st
   );
 }
 
-function VenuePublicProfile({ userId, userName }: { userId: any; userName: string }) {
+function VenuePublicProfile({ userId, userName }: { userId: Id<"users">; userName: string }) {
   const venue = useQuery(api.venues.getByUserId, { userId });
 
   if (venue === undefined) {
@@ -187,7 +188,7 @@ function VenuePublicProfile({ userId, userName }: { userId: any; userName: strin
   if (!venue) return null;
 
   const socialLinks = venue.socialLinks
-    ? Object.entries(venue.socialLinks).filter(([, url]) => url && url.length > 0)
+    ? Object.entries(venue.socialLinks as Record<string, string | undefined>).filter(([, url]: [string, string | undefined]) => url && url.length > 0) as [string, string][]
     : [];
 
   return (

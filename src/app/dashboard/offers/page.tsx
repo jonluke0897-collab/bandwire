@@ -16,6 +16,10 @@ import { toast } from "@/components/ui/toast";
 import { DEAL_TYPES } from "@/lib/constants";
 import { Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Doc } from "../../../../convex/_generated/dataModel";
+
+type OfferWithVenueName = Doc<"offers"> & { venueName: string };
+type OfferWithMusicianName = Doc<"offers"> & { musicianBandName: string };
 
 const VENUE_TABS = ["All", "Pending", "Accepted", "Declined", "Countered"] as const;
 const MUSICIAN_TABS = ["Pending", "Accepted", "Declined"] as const;
@@ -38,7 +42,7 @@ function VenueOffers() {
   const filtered =
     activeTab === "All"
       ? offers
-      : offers.filter((o) => o.status === activeTab.toLowerCase());
+      : offers.filter((o: OfferWithMusicianName) => o.status === activeTab.toLowerCase());
 
   return (
     <div className="max-w-content mx-auto">
@@ -48,7 +52,7 @@ function VenueOffers() {
         <EmptyOffers tab={activeTab} />
       ) : (
         <div className="space-y-3">
-          {filtered.map((offer) => (
+          {filtered.map((offer: OfferWithMusicianName) => (
             <OfferCard key={offer._id} offer={offer} role="venue" />
           ))}
         </div>
@@ -76,7 +80,7 @@ function MusicianOffers() {
 
   if (offers === undefined) return <OffersLoading />;
 
-  const filtered = offers.filter((o) => o.status === activeTab.toLowerCase());
+  const filtered = offers.filter((o: OfferWithVenueName) => o.status === activeTab.toLowerCase());
 
   const handleAccept = async (offerId: Id<"offers">) => {
     try {
@@ -132,7 +136,7 @@ function MusicianOffers() {
         <EmptyOffers tab={activeTab} />
       ) : (
         <div className="space-y-3">
-          {filtered.map((offer) => (
+          {filtered.map((offer: OfferWithVenueName) => (
             <OfferCard
               key={offer._id}
               offer={offer}

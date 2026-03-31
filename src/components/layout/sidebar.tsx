@@ -14,6 +14,7 @@ import {
   Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 const venueNav = [
   { href: "/dashboard/calendar", label: "Calendar", icon: Calendar },
@@ -66,6 +67,27 @@ export function Sidebar() {
           );
         })}
       </nav>
+      {user?.role === "venue" && (
+        <div className="px-3 py-4 border-t border-border">
+          <div className="flex items-center justify-between px-3">
+            <Badge
+              variant={
+                user.subscriptionTier === "pro" ? "success" : "secondary"
+              }
+            >
+              {user.subscriptionTier === "pro" ? "Pro" : "Free"}
+            </Badge>
+            {user.subscriptionTier === "free" && (
+              <Link
+                href="/dashboard/settings"
+                className="text-xs text-primary hover:underline"
+              >
+                Upgrade
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </aside>
   );
 }
