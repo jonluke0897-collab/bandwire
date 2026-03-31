@@ -3,8 +3,8 @@
 /* Bandwire Design Tokens — Tailwind v4 theme configuration */
 @theme inline {
   /* Colors */
-  --color-primary: #3B82F6;
-  --color-primary-hover: #2563EB;
+  --color-primary: #10C5EA;
+  --color-primary-hover: #0EA5C7;
   --color-secondary: #8B5CF6;
   --color-secondary-hover: #7C3AED;
   --color-background: #0A0A0F;
@@ -22,6 +22,7 @@
   --font-heading: var(--font-inter), "Inter", sans-serif;
   --font-body: var(--font-inter), "Inter", sans-serif;
   --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+  --font-logo: var(--font-alice), "Alice", serif;
 
   /* Border Radius */
   --radius-sm: 6px;
@@ -30,7 +31,7 @@
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-glow: 0 4px 24px rgba(59, 130, 246, 0.08);
+  --shadow-glow: 0 4px 24px rgba(16, 197, 234, 0.08);
 
   /* Max Widths */
   --max-width-content: 1280px;

@@ -42,7 +42,7 @@ export function Sidebar() {
   return (
     <aside className="hidden md:flex md:flex-col md:w-sidebar md:fixed md:inset-y-0 bg-surface border-r border-border">
       <div className="flex h-16 items-center px-6 border-b border-border">
-        <Link href="/dashboard" className="text-xl font-bold text-primary">
+        <Link href="/dashboard" className="text-xl font-bold text-primary font-logo">
           Bandwire
         </Link>
       </div>

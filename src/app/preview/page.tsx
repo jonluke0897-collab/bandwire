@@ -152,7 +152,7 @@ export default function PreviewPage() {
       <div>
         <aside className="hidden md:flex md:flex-col md:w-sidebar md:fixed md:inset-y-0 bg-surface border-r border-border z-10">
           <div className="flex h-16 items-center px-6 border-b border-border">
-            <span className="text-xl font-bold text-primary">Bandwire</span>
+            <span className="text-xl font-bold text-primary font-logo">Bandwire</span>
           </div>
           <nav className="flex-1 px-3 py-4 space-y-1">
             {([

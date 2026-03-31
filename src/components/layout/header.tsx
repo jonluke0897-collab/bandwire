@@ -29,7 +29,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-background/80 backdrop-blur-sm px-6">
       <div className="md:hidden">
-        <Link href="/dashboard" className="text-xl font-bold text-primary">
+        <Link href="/dashboard" className="text-xl font-bold text-primary font-logo">
           Bandwire
         </Link>
       </div>
