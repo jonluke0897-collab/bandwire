@@ -39,6 +39,9 @@
   /* Width */
   --width-sidebar: 256px;
 
+  /* Spacing */
+  --spacing-sidebar: 256px;
+
   /* Transition Durations */
   --transition-duration-default: 150ms;
   --transition-duration-slow: 250ms;
