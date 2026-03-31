@@ -1,6 +1,13 @@
-import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const { userId } = await auth();
+
+  if (userId) {
+    redirect("/dashboard");
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6">
       <div className="text-center max-w-xl">
@@ -16,18 +23,18 @@ export default function Home() {
           gigs — all in one place.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
+          <a
             href="/sign-up"
             className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-base font-semibold text-white transition-all hover:bg-primary-hover active:scale-[0.98]"
           >
             Get Started
-          </Link>
-          <Link
+          </a>
+          <a
             href="/sign-in"
             className="inline-flex items-center justify-center rounded-md border border-border px-8 py-3 text-base font-semibold text-text-primary transition-all hover:bg-surface-hover"
           >
             Sign In
-          </Link>
+          </a>
         </div>
       </div>
     </main>
