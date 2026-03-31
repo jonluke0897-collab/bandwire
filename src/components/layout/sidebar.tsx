@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 import {
   Calendar,
   Users,
@@ -13,7 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const navItems = [
+const venueNav = [
   { href: "/dashboard/calendar", label: "Calendar", icon: Calendar },
   { href: "/dashboard/matches", label: "Matches", icon: Users },
   { href: "/dashboard/bookings", label: "Bookings", icon: BookOpen },
@@ -23,8 +25,19 @@ const navItems = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
+const musicianNav = [
+  { href: "/dashboard/bookings", label: "Bookings", icon: BookOpen },
+  { href: "/dashboard/offers", label: "Offers", icon: Send },
+  { href: "/dashboard/browse", label: "Browse", icon: Search },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings },
+];
+
 export function Sidebar() {
   const pathname = usePathname();
+  const user = useQuery(api.users.me);
+
+  const navItems = user?.role === "musician" ? musicianNav : venueNav;
 
   return (
     <aside className="hidden md:flex md:flex-col md:w-sidebar md:fixed md:inset-y-0 bg-surface border-r border-border">
