@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/* Bandwire Design Tokens — Tailwind v4 theme configuration */
+@theme inline {
+  /* Colors */
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  --color-secondary: #8B5CF6;
+  --color-secondary-hover: #7C3AED;
+  --color-background: #0A0A0F;
+  --color-surface: #16161F;
+  --color-surface-hover: #1E1E2A;
+  --color-border: #2A2A3A;
+  --color-text-primary: #F1F1F3;
+  --color-text-muted: #8888A0;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #06B6D4;
+
+  /* Fonts */
+  --font-heading: var(--font-inter), "Inter", sans-serif;
+  --font-body: var(--font-inter), "Inter", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-glow: 0 4px 24px rgba(59, 130, 246, 0.08);
+
+  /* Max Widths */
+  --max-width-content: 1280px;
+  --max-width-narrow: 768px;
+
+  /* Width */
+  --width-sidebar: 256px;
+
+  /* Transition Durations */
+  --transition-duration-default: 150ms;
+  --transition-duration-slow: 250ms;
+}
+
+/* CSS Custom Properties for direct use */
+:root {
+  --transition-default: 150ms ease-out;
+  --transition-slow: 250ms ease-out;
+}
+
+/* Base styles */
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+/* Focus ring utility */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Shimmer animation for skeleton loading */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

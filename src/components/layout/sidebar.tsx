@@ -1,0 +1,58 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Calendar,
+  Users,
+  BookOpen,
+  Send,
+  Search,
+  User,
+  Settings,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const navItems = [
+  { href: "/dashboard/calendar", label: "Calendar", icon: Calendar },
+  { href: "/dashboard/matches", label: "Matches", icon: Users },
+  { href: "/dashboard/bookings", label: "Bookings", icon: BookOpen },
+  { href: "/dashboard/offers", label: "Offers", icon: Send },
+  { href: "/dashboard/browse", label: "Browse", icon: Search },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings },
+];
+
+export function Sidebar() {
+  const pathname = usePathname();
+
+  return (
+    <aside className="hidden md:flex md:flex-col md:w-sidebar md:fixed md:inset-y-0 bg-surface border-r border-border">
+      <div className="flex h-16 items-center px-6 border-b border-border">
+        <Link href="/dashboard" className="text-xl font-bold text-primary">
+          Bandwire
+        </Link>
+      </div>
+      <nav className="flex-1 px-3 py-4 space-y-1">
+        {navItems.map((item) => {
+          const isActive = pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-default",
+                isActive
+                  ? "bg-primary/10 text-primary"
+                  : "text-text-muted hover:text-text-primary hover:bg-surface-hover"
+              )}
+            >
+              <item.icon size={20} />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
+  );
+}

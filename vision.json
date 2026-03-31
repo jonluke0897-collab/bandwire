@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "createdAt": "2026-03-30T12:00:00Z",
+    "updatedAt": "2026-03-30T12:00:00Z",
+    "version": "1.0",
+    "plaidVersion": "1.0"
+  },
+  "creator": {
+    "name": "Jon",
+    "expertise": "Gigging musician for 10 years, guitarist for 15 years with deep experience in the live music scene",
+    "background": "I've been on the other side of every broken booking email. With 10 years of gigging, I've experienced every frustration musicians face — the ghosting, the messy negotiations, the lack of professionalism. I'm from the grassroots scene this is built for. I'm not a tech founder guessing at what musicians and venues need — I've lived it. That means the product will be shaped by real experience, not assumptions, and the community will trust it because it's built by one of their own."
+  },
+  "purpose": {
+    "whoYouHelp": "Independent venue owners, grassroots promoters, and emerging musicians/bands who need a professional, affordable way to book and manage live gigs without the bloated tools built for big agencies",
+    "problemYouSolve": "The booking process is stuck in 2005. Venues and promoters are still juggling emails, DMs, spreadsheets, and phone calls to book acts. There's no central place to manage it, and things fall through the cracks constantly. The tools that do exist aren't built for the grassroots level — they're overpriced, overcomplicated, and designed for mid-size+ venues and established agencies. Independent venues, local promoters, and emerging bands are left with clunky tools or no tools at all.",
+    "desiredTransformation": "Booking a gig takes minutes, not weeks. Venues post available dates, bands apply or get matched, terms are agreed on in-app, and both sides have a clear, professional workflow. Independent venues and emerging bands operate like pros — even a small bar or a new promoter can manage their live music calendar, contracts, and payments as smoothly as a major venue. The local music scene thrives because more gigs get booked, more bands get discovered, more venues fill rooms, and the friction that killed opportunities is gone.",
+    "whyYou": "I've been on the other side of every broken booking email. With 10 years of gigging, I've experienced every frustration musicians face — the ghosting, the messy negotiations, the lack of professionalism. I'm building what I wished existed when I was cold-emailing venues. I'm from the grassroots scene this is built for, and the community will trust it because it's built by one of their own."
+  },
+  "product": {
+    "name": "Bandwire",
+    "oneLiner": "Bandwire connects venues and promoters with the right bands, handling the entire booking process in one place — so grassroots live music runs like a professional operation.",
+    "howItWorks": "A venue owner logs in, posts an open date with details like genre preference, capacity, and budget range. Bandwire surfaces matching bands based on location, genre, and draw. The venue can also browse and discover acts on their own, filtering by genre, location, and streaming stats. Once they find the right fit, they send a booking request with their standard deal terms. The band accepts or counters, they finalize in-app, and Bandwire generates a simple contract and handles payment.",
+    "keyCapabilities": [
+      "Smart artist-venue matching based on genre, location, and draw",
+      "Open date posting and availability calendar",
+      "One-click offer and booking workflow with negotiation",
+      "In-app contracts and payment processing",
+      "Artist profiles with EPKs, streaming stats, and media"
+    ],
+    "platform": "web",
+    "marketDifferentiation": "Unlike Gigwell and Prism, Bandwire is built for independent venues and grassroots promoters — not agencies running 500 shows a year. It's affordable, simple, and doesn't require a learning curve to get started. Unlike Gigmit and GigSalad, Bandwire doesn't stop at discovery — it handles the full loop from finding the right band, sending the offer, agreeing terms, signing a contract, and processing payment, all in one place. And unlike everything out there, Bandwire was built by a gigging musician who's lived both sides of the booking process, designed for real people in the grassroots scene, not enterprise booking agencies.",
+    "magicMoment": "A venue owner posts an open Friday slot at 2pm, and by 3pm has three matched bands to choose from — complete with streaming stats, media, and one-click booking. What used to take two weeks of emails just happened in an hour. A band signs up, builds their profile in 5 minutes, and wakes up the next morning to a real booking offer from a local venue — no cold emails, no begging, no ghosting. A promoter books their first show entirely through Bandwire — found the band, sent the offer, agreed terms, signed the contract, processed the deposit — and realizes they never opened their email once."
+  },
+  "audience": {
+    "primaryUser": "Three core personas: Jake, 35, runs a 200-cap live music bar in a mid-size city — books 3-4 acts a week himself with no booking agent, spends his day managing the bar and digging through emails trying to fill next month's calendar. Maria, 28, an independent promoter putting on 2-3 shows a month at rented venues while juggling a day job, manages everything in a Google Sheet. Sam, 42, owns three bars that all host live music on weekends, has different bookers at each location with no centralized view — acts get double-booked and he has no idea which nights are profitable.",
+    "secondaryUsers": [
+      "Musicians and bands — the other side of the marketplace. They create profiles, showcase their EPK and streaming stats, browse available gig opportunities, receive offers, and manage their bookings. Not the paying customer initially but essential to making the platform valuable.",
+      "Booking agents and managers who represent multiple artists — they'd want a dashboard view across all their acts, the ability to respond to offers on behalf of bands, and visibility into which venues are looking for artists in their genre.",
+      "Sound engineers and production crews who could be connected to confirmed bookings to handle stage plots, tech riders, and logistics. Not essential for MVP but a natural expansion."
+    ],
+    "currentAlternatives": "Venues use a mix of Gigwell or Prism (if they can afford it), combined with Google Calendar, email, and spreadsheets to track bookings. Bands use Gigmit or Sonicbids to submit applications and hope for a response. Contracts happen over email as PDF attachments, payments are Venmo or checks. Most grassroots booking happens through Instagram DMs, Facebook messages, and word of mouth — bands message venues directly, promoters post in local Facebook groups, and everything is tracked in people's heads or scattered across message threads. Many venues just rebook the same bands on rotation because finding new ones is too much work, and bands stop reaching out after being ghosted too many times.",
+    "frustrations": "Functionally, nothing talks to each other — you're bouncing between email, DMs, spreadsheets, calendars, Venmo, and PDF contracts. Nothing is connected, so things get lost, double bookings happen, payments get forgotten. Emotionally, it feels amateur and exhausting — bands feel like they're begging for gigs, venues feel overwhelmed by irrelevant submissions, promoters feel like they're holding everything together with duct tape. Practically, it wastes everyone's time and money — venues spend hours per week on booking admin that should take minutes, bands spend weeks chasing a single gig, and the expensive tools that could help (Gigwell at $199/mo, Prism with opaque pricing) are overkill and overpriced for independent operators."
+  },
+  "business": {
+    "revenueModel": "freemium",
+    "initialGoal": "50 active venues, 300 musician profiles, 50 completed bookings through the platform, first 5 paying subscribers, and one local music scene (home city) where Bandwire is becoming the go-to tool for booking live music.",
+    "sixMonthVision": "200 active venues across 5 cities, 1,500 musician profiles, 500+ completed bookings, 30 paying subscribers generating approximately $2k/mo MRR. Known as 'the app' for live music booking in the home region. Starting to get inbound interest from other cities.",
+    "constraints": "Side-hustle builder — still gigging and possibly working another job, with about 15-20 hours a week to dedicate to building. Budget is tight at under $500/mo for tools and hosting. Deep music industry knowledge but not a developer — will lean heavily on AI coding tools. Building solo.",
+    "goToMarket": "Community-first launch — embed in the online communities where users already hang out: local music Facebook groups, Reddit's r/WeAreTheMusicMakers, promoter forums, venue owner groups. Share the journey of building Bandwire as a gigging musician solving a real problem. Build an audience before launch, then convert them into early users."
+  },
+  "feeling": {
+    "brandPersonality": "The sharp indie operator — modern, clean, efficient. Respects your time. Smart without being flashy. Feels like a startup built by music people, not tech bros trying to disrupt the industry from the outside.",
+    "visualMood": "Dark and electric — dark backgrounds with vibrant accent colors like electric blue or neon purple. Feels like a dimly lit venue with stage lights cutting through. Modern, high-contrast, energetic. Like Linear meets a late-night gig poster.",
+    "toneOfVoice": "Friendly but efficient — warm enough to feel human, concise enough to not waste time. Like a helpful colleague who texts you exactly what you need. Error: 'This one didn't work out — the band passed. Here are 3 more matches.' Success: 'You're locked in! Contract's on its way to both sides.' CTA: 'Find your next act'",
+    "antiPatterns": "Never corporate or salesy — no stock photography of people in suits shaking hands, no 'synergize your booking pipeline' language, no aggressive upsell popups. Never cluttered or overwhelming — no dashboards packed with 50 metrics nobody asked for, no 12-step onboarding wizards, no feature bloat. Never patronizing or gatekeepy — no 'you need to upgrade to see this,' no tone that talks down to users. These are professionals, treat them like it."
+  },
+  "techStack": {
+    "appType": "web",
+    "frontend": {
+      "choice": "Next.js",
+      "rationale": "Massive ecosystem, best AI coding tool support with Claude Code, excellent Convex integration, and the natural path to mobile later via React Native since the team will already know React patterns."
+    },
+    "backend": {
+      "choice": "Convex",
+      "rationale": "Real-time reactivity out of the box — perfect for live booking updates when venues send offers and bands respond. Zero backend boilerplate, built-in database, TypeScript-native. Ideal for a solo non-developer founder using AI tools."
+    },
+    "database": {
+      "choice": "Convex Database",
+      "rationale": "Included with Convex backend, automatic indexing, ACID transactions, reactive queries for real-time updates. No separate setup needed."
+    },
+    "auth": {
+      "choice": "Clerk",
+      "rationale": "Rich pre-built UI components for polished sign-up flows — important for first impressions with venue owners. Integrates well with Convex. Free tier covers 10k monthly active users, well beyond 90-day goals."
+    },
+    "payments": {
+      "choice": "Polar",
+      "rationale": "Purpose-built for SaaS subscriptions and freemium models. Simple setup, clean checkout pages. Perfect for venue subscription billing. Can add Stripe Connect later if marketplace payouts to musicians are needed."
+    }
+  },
+  "tooling": {
+    "codingAgent": "claude-code"
+  }
+}
