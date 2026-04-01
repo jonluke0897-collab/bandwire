@@ -1,5 +1,6 @@
 import { v, ConvexError } from "convex/values";
 import { query, mutation } from "./_generated/server";
+import { internal } from "./_generated/api";
 import { requireUser } from "./lib/auth";
 import { Doc } from "./_generated/dataModel";
 
@@ -168,6 +169,12 @@ export const cancel = mutation({
       relatedBookingId: booking._id,
       isRead: false,
       createdAt: Date.now(),
+    });
+
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: otherUserId,
+      eventType: "booking_cancelled",
+      data: { date: booking.date, reason: args.reason, linkUrl: `/dashboard/bookings` },
     });
 
     return null;

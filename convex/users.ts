@@ -100,3 +100,32 @@ export const update = mutation({
     return null;
   },
 });
+
+export const updateEmailPreferences = mutation({
+  args: {
+    newOffers: v.boolean(),
+    offerResponses: v.boolean(),
+    bookingUpdates: v.boolean(),
+    marketing: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new ConvexError("Not authenticated");
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+    if (!user) throw new ConvexError("User not found");
+
+    await ctx.db.patch(user._id, {
+      emailPreferences: {
+        newOffers: args.newOffers,
+        offerResponses: args.offerResponses,
+        bookingUpdates: args.bookingUpdates,
+        marketing: args.marketing,
+      },
+    });
+    return null;
+  },
+});

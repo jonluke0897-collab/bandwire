@@ -17,6 +17,14 @@ export default defineSchema({
     onboardingComplete: v.boolean(),
     subscriptionTier: v.union(v.literal("free"), v.literal("pro")),
     subscriptionId: v.optional(v.string()),
+    emailPreferences: v.optional(
+      v.object({
+        newOffers: v.boolean(),
+        offerResponses: v.boolean(),
+        bookingUpdates: v.boolean(),
+        marketing: v.boolean(),
+      })
+    ),
     createdAt: v.number(),
   })
     .index("by_clerkId", ["clerkId"])

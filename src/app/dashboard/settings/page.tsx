@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { useAction } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Card } from "@/components/ui/card";
@@ -150,74 +150,111 @@ export default function SettingsPage() {
         </Card>
       )}
 
-      {/* Notification Preferences — placeholder */}
-      <Card>
-        <div className="flex items-center gap-3 mb-4">
-          <Bell size={20} className="text-info" />
-          <h2 className="text-lg font-medium">Notifications</h2>
-        </div>
-        <div className="space-y-4">
-          <NotificationToggle
-            label="New offers"
-            description="Get notified when you receive a booking offer"
-            defaultChecked
-          />
-          <NotificationToggle
-            label="Offer responses"
-            description="Get notified when an offer is accepted or declined"
-            defaultChecked
-          />
-          <NotificationToggle
-            label="Booking updates"
-            description="Get notified about booking changes and cancellations"
-            defaultChecked
-          />
-          <NotificationToggle
-            label="Marketing"
-            description="Tips, updates, and news from Bandwire"
-            defaultChecked={false}
-          />
-        </div>
-        <p className="text-xs text-text-muted mt-4">
-          Email notifications coming soon.
-        </p>
-      </Card>
+      {/* Notification Preferences */}
+      <NotificationPreferences
+        emailPreferences={user.emailPreferences}
+      />
     </div>
   );
 }
 
-function NotificationToggle({
-  label,
-  description,
-  defaultChecked = true,
+function NotificationPreferences({
+  emailPreferences,
 }: {
-  label: string;
-  description: string;
-  defaultChecked?: boolean;
+  emailPreferences?: {
+    newOffers: boolean;
+    offerResponses: boolean;
+    bookingUpdates: boolean;
+    marketing: boolean;
+  };
 }) {
-  const [checked, setChecked] = useState(defaultChecked);
+  const updatePrefs = useMutation(api.users.updateEmailPreferences);
+  const [prefs, setPrefs] = useState({
+    newOffers: emailPreferences?.newOffers ?? true,
+    offerResponses: emailPreferences?.offerResponses ?? true,
+    bookingUpdates: emailPreferences?.bookingUpdates ?? true,
+    marketing: emailPreferences?.marketing ?? false,
+  });
+  const [saving, setSaving] = useState(false);
+
+  const handleToggle = async (
+    key: keyof typeof prefs,
+    value: boolean
+  ) => {
+    const updated = { ...prefs, [key]: value };
+    setPrefs(updated);
+    setSaving(true);
+    try {
+      await updatePrefs(updated);
+    } catch {
+      // revert on error
+      setPrefs(prefs);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const toggles: {
+    key: keyof typeof prefs;
+    label: string;
+    description: string;
+  }[] = [
+    {
+      key: "newOffers",
+      label: "New offers",
+      description: "Get emailed when you receive a booking offer",
+    },
+    {
+      key: "offerResponses",
+      label: "Offer responses",
+      description: "Get emailed when an offer is accepted or declined",
+    },
+    {
+      key: "bookingUpdates",
+      label: "Booking updates",
+      description: "Get emailed about booking changes and cancellations",
+    },
+    {
+      key: "marketing",
+      label: "Marketing",
+      description: "Tips, updates, and news from Bandwire",
+    },
+  ];
 
   return (
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-sm font-medium">{label}</p>
-        <p className="text-xs text-text-muted">{description}</p>
+    <Card>
+      <div className="flex items-center gap-3 mb-4">
+        <Bell size={20} className="text-info" />
+        <h2 className="text-lg font-medium">Email Notifications</h2>
+        {saving && (
+          <span className="text-xs text-text-muted">Saving...</span>
+        )}
       </div>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        onClick={() => setChecked(!checked)}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          checked ? "bg-primary" : "bg-border"
-        }`}
-      >
-        <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-            checked ? "translate-x-6" : "translate-x-1"
-          }`}
-        />
-      </button>
-    </div>
+      <div className="space-y-4">
+        {toggles.map((t) => (
+          <div key={t.key} className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium">{t.label}</p>
+              <p className="text-xs text-text-muted">{t.description}</p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={prefs[t.key]}
+              onClick={() => handleToggle(t.key, !prefs[t.key])}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                prefs[t.key] ? "bg-primary" : "bg-border"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  prefs[t.key] ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 }

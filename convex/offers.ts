@@ -1,5 +1,6 @@
 import { v, ConvexError } from "convex/values";
 import { query, mutation } from "./_generated/server";
+import { internal } from "./_generated/api";
 import { requireVenue, requireMusician, requireUser } from "./lib/auth";
 
 const dealTypeValidator = v.union(
@@ -139,6 +140,12 @@ export const send = mutation({
       createdAt: Date.now(),
     });
 
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: musician.userId,
+      eventType: "new_offer",
+      data: { date: openDate.date, venueName: venue.name, linkUrl: `/dashboard/offers` },
+    });
+
     return offerId;
   },
 });
@@ -271,6 +278,12 @@ export const accept = mutation({
       createdAt: Date.now(),
     });
 
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: offer.senderUserId,
+      eventType: "offer_accepted",
+      data: { date: offer.date, otherPartyName: musician.bandName, linkUrl: `/dashboard/bookings/${bookingId}` },
+    });
+
     return bookingId;
   },
 });
@@ -309,6 +322,12 @@ export const decline = mutation({
       relatedOfferId: offer._id,
       isRead: false,
       createdAt: Date.now(),
+    });
+
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: offer.senderUserId,
+      eventType: "offer_declined",
+      data: { date: offer.date, otherPartyName: musician.bandName, reason: args.reason, linkUrl: `/dashboard/offers` },
     });
 
     return null;
@@ -351,6 +370,12 @@ export const counter = mutation({
       relatedOfferId: offer._id,
       isRead: false,
       createdAt: Date.now(),
+    });
+
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: offer.senderUserId,
+      eventType: "offer_countered",
+      data: { date: offer.date, otherPartyName: musician.bandName, linkUrl: `/dashboard/offers/${offer._id}` },
     });
 
     return null;
@@ -414,6 +439,12 @@ export const acceptCounter = mutation({
       relatedBookingId: bookingId,
       isRead: false,
       createdAt: Date.now(),
+    });
+
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: offer.recipientUserId,
+      eventType: "offer_accepted",
+      data: { date: offer.date, otherPartyName: venue.name, linkUrl: `/dashboard/bookings/${bookingId}` },
     });
 
     return bookingId;
