@@ -24,9 +24,12 @@ http.route({
       return new Response("Webhook secret not configured", { status: 500 });
     }
 
-    // Secret has "whsec_" prefix, strip it and base64-decode
+    // Secret may have "whsec_" or "polar_whs_" prefix — strip it and base64-decode
+    const cleanSecret = secret
+      .replace("whsec_", "")
+      .replace("polar_whs_", "");
     const secretBytes = Uint8Array.from(
-      atob(secret.replace("whsec_", "")),
+      atob(cleanSecret),
       (c) => c.charCodeAt(0)
     );
 
