@@ -142,7 +142,7 @@ export default function CalendarPage() {
                 )}
               >
                 {format(day, "d")}
-                {openDate && openDate.status !== "cancelled" && (
+                {openDate && (
                   <span
                     className={cn(
                       "absolute bottom-1 h-1.5 w-1.5 rounded-full",

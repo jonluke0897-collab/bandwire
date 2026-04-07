@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 import {
   Calendar,
   BookOpen,
@@ -11,8 +13,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const mobileNavItems = [
+const venueNavItems = [
   { href: "/dashboard/calendar", label: "Calendar", icon: Calendar },
+  { href: "/dashboard/bookings", label: "Bookings", icon: BookOpen },
+  { href: "/dashboard/offers", label: "Offers", icon: Send },
+  { href: "/dashboard/browse", label: "Browse", icon: Search },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
+];
+
+const musicianNavItems = [
   { href: "/dashboard/bookings", label: "Bookings", icon: BookOpen },
   { href: "/dashboard/offers", label: "Offers", icon: Send },
   { href: "/dashboard/browse", label: "Browse", icon: Search },
@@ -21,10 +30,13 @@ const mobileNavItems = [
 
 export function MobileNav() {
   const pathname = usePathname();
+  const user = useQuery(api.users.me);
+
+  const navItems = user?.role === "musician" ? musicianNavItems : venueNavItems;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 flex md:hidden items-center justify-around border-t border-border bg-surface py-2">
-      {mobileNavItems.map((item) => {
+      {navItems.map((item) => {
         const isActive = pathname.startsWith(item.href);
         return (
           <Link

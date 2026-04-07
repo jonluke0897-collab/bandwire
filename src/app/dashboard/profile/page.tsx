@@ -16,12 +16,13 @@ import { PhotoUpload } from "@/components/ui/photo-upload";
 import { toast } from "@/components/ui/toast";
 import { GENRES, DEAL_TYPES, US_STATES } from "@/lib/constants";
 import { useEffect, useState } from "react";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 export default function ProfilePage() {
   const user = useQuery(api.users.me);
   if (!user) return null;
-  if (user.role === "venue") return <VenueProfile userId={user._id} userName={user.name} />;
-  return <MusicianProfile userId={user._id} userName={user.name} />;
+  if (user.role === "venue") return <VenueProfile userId={user._id} userName={user.name} username={user.username} />;
+  return <MusicianProfile userId={user._id} userName={user.name} username={user.username} />;
 }
 
 // --- Venue Profile ---
@@ -40,8 +41,8 @@ const venueSchema = z.object({
   displayName: z.string().min(1, "Name is required"),
 });
 
-function VenueProfile({ userId, userName }: { userId: string; userName: string }) {
-  const venue = useQuery(api.venues.getByUserId, { userId: userId as any });
+function VenueProfile({ userId, userName, username }: { userId: Id<"users">; userName: string; username: string }) {
+  const venue = useQuery(api.venues.getByUserId, { userId });
   const updateVenue = useMutation(api.venues.update);
   const updateUser = useMutation(api.users.update);
   const [submitting, setSubmitting] = useState(false);
@@ -103,7 +104,7 @@ function VenueProfile({ userId, userName }: { userId: string; userName: string }
     <div className="max-w-narrow mx-auto">
       <h1 className="text-2xl font-semibold mb-6">Edit Profile</h1>
       <Card className="mb-6">
-        <p className="text-sm text-text-muted">Username: <span className="text-text-primary font-mono">@{venue ? "" : ""}</span></p>
+        <p className="text-sm text-text-muted">Username: <span className="text-text-primary font-mono">@{username}</span></p>
       </Card>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -169,8 +170,8 @@ const musicianSchema = z.object({
   displayName: z.string().min(1, "Name is required"),
 });
 
-function MusicianProfile({ userId, userName }: { userId: string; userName: string }) {
-  const musician = useQuery(api.musicians.getByUserId, { userId: userId as any });
+function MusicianProfile({ userId, userName, username }: { userId: Id<"users">; userName: string; username: string }) {
+  const musician = useQuery(api.musicians.getByUserId, { userId });
   const updateMusician = useMutation(api.musicians.update);
   const updateUser = useMutation(api.users.update);
   const [submitting, setSubmitting] = useState(false);
@@ -254,6 +255,9 @@ function MusicianProfile({ userId, userName }: { userId: string; userName: strin
   return (
     <div className="max-w-narrow mx-auto">
       <h1 className="text-2xl font-semibold mb-6">Edit Profile</h1>
+      <Card className="mb-6">
+        <p className="text-sm text-text-muted">Username: <span className="text-text-primary font-mono">@{username}</span></p>
+      </Card>
 
       {/* Profile completeness */}
       <Card className="mb-6">

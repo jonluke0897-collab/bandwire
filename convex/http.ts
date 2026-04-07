@@ -95,13 +95,16 @@ http.route({
     if (eventType === "subscription.canceled") {
       const subscription = event.data;
       const convexUserId = subscription.metadata?.convexUserId;
-      if (convexUserId) {
-        await ctx.runMutation(internal.subscriptions.updateSubscription, {
-          convexUserId,
-          subscriptionId: subscription.id,
-          tier: "free",
+      if (!convexUserId) {
+        return new Response("Missing convexUserId in metadata", {
+          status: 400,
         });
       }
+      await ctx.runMutation(internal.subscriptions.updateSubscription, {
+        convexUserId,
+        subscriptionId: subscription.id,
+        tier: "free",
+      });
     }
 
     return new Response("OK", { status: 200 });

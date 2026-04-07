@@ -8,6 +8,7 @@ type EmailEventType =
   | "offer_accepted"
   | "offer_declined"
   | "offer_countered"
+  | "offer_withdrawn"
   | "booking_confirmed"
   | "booking_cancelled";
 
@@ -51,6 +52,14 @@ const eventContent: Record<
     bodyTemplate: (d) =>
       `${d.otherPartyName} sent a counter-offer for ${d.date}. Take a look and decide.`,
     ctaText: "View Counter-Offer",
+    preferenceKey: "offerResponses",
+  },
+  offer_withdrawn: {
+    subject: "Offer withdrawn",
+    title: "Offer Withdrawn",
+    bodyTemplate: (d) =>
+      `${d.otherPartyName} has withdrawn their booking offer for ${d.date}.`,
+    ctaText: "View Offers",
     preferenceKey: "offerResponses",
   },
   booking_confirmed: {

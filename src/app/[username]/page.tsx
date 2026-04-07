@@ -39,13 +39,13 @@ export default function PublicProfilePage() {
     );
   }
 
-  if (user.role === "musician") return <MusicianPublicProfile userId={user._id} userName={user.name} />;
-  if (user.role === "venue") return <VenuePublicProfile userId={user._id} userName={user.name} />;
+  if (user.role === "musician") return <MusicianPublicProfile userId={user._id} />;
+  if (user.role === "venue") return <VenuePublicProfile userId={user._id} />;
 
   return null;
 }
 
-function MusicianPublicProfile({ userId, userName }: { userId: Id<"users">; userName: string }) {
+function MusicianPublicProfile({ userId }: { userId: Id<"users"> }) {
   const musician = useQuery(api.musicians.getByUserId, { userId });
 
   if (musician === undefined) {
@@ -172,7 +172,7 @@ function MusicianPublicProfile({ userId, userName }: { userId: Id<"users">; user
   );
 }
 
-function VenuePublicProfile({ userId, userName }: { userId: Id<"users">; userName: string }) {
+function VenuePublicProfile({ userId }: { userId: Id<"users"> }) {
   const venue = useQuery(api.venues.getByUserId, { userId });
 
   if (venue === undefined) {

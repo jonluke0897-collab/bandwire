@@ -284,6 +284,18 @@ export const accept = mutation({
       data: { date: offer.date, otherPartyName: musician.bandName, linkUrl: `/dashboard/bookings/${bookingId}` },
     });
 
+    // Send booking_confirmed email to both parties
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: offer.senderUserId,
+      eventType: "booking_confirmed",
+      data: { date: offer.date, linkUrl: `/dashboard/bookings/${bookingId}` },
+    });
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: user._id,
+      eventType: "booking_confirmed",
+      data: { date: offer.date, linkUrl: `/dashboard/bookings/${bookingId}` },
+    });
+
     return bookingId;
   },
 });
@@ -327,7 +339,7 @@ export const decline = mutation({
     await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
       userId: offer.senderUserId,
       eventType: "offer_declined",
-      data: { date: offer.date, otherPartyName: musician.bandName, reason: args.reason, linkUrl: `/dashboard/offers` },
+      data: { date: offer.date, otherPartyName: musician.bandName, reason: args.reason ?? "", linkUrl: `/dashboard/offers` },
     });
 
     return null;
@@ -353,6 +365,12 @@ export const counter = mutation({
       throw new ConvexError("Not authorized");
     if (offer.status !== "pending")
       throw new ConvexError("Offer is no longer pending");
+
+    // Validate counter has at least one meaningful change
+    const co = args.counterOffer;
+    if (!co.amount && !co.splitPercentage && !co.dealType && !co.notes) {
+      throw new ConvexError("Counter-offer must include at least one change");
+    }
 
     await ctx.db.patch(args.offerId, {
       status: "countered",
@@ -447,6 +465,18 @@ export const acceptCounter = mutation({
       data: { date: offer.date, otherPartyName: venue.name, linkUrl: `/dashboard/bookings/${bookingId}` },
     });
 
+    // Send booking_confirmed email to both parties
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: user._id,
+      eventType: "booking_confirmed",
+      data: { date: offer.date, linkUrl: `/dashboard/bookings/${bookingId}` },
+    });
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: offer.recipientUserId,
+      eventType: "booking_confirmed",
+      data: { date: offer.date, linkUrl: `/dashboard/bookings/${bookingId}` },
+    });
+
     return bookingId;
   },
 });
@@ -464,6 +494,24 @@ export const withdraw = mutation({
 
     await ctx.db.patch(args.offerId, { status: "withdrawn" });
     await ctx.db.patch(offer.openDateId, { status: "open" });
+
+    // Notify musician
+    await ctx.db.insert("notifications", {
+      userId: offer.recipientUserId,
+      type: "general",
+      title: "Offer Withdrawn",
+      message: `${venue.name} withdrew their booking offer for ${offer.date}`,
+      linkUrl: "/dashboard/offers",
+      relatedOfferId: offer._id,
+      isRead: false,
+      createdAt: Date.now(),
+    });
+
+    await ctx.scheduler.runAfter(0, internal.emails.sendEventEmail, {
+      userId: offer.recipientUserId,
+      eventType: "offer_withdrawn",
+      data: { date: offer.date, otherPartyName: venue.name, linkUrl: "/dashboard/offers" },
+    });
 
     return null;
   },
